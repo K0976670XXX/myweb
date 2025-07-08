@@ -1,0 +1,29 @@
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>圖片去背</title>
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script type="module" src="main.js"></script>
+  
+</head>
+
+<body>
+  <h1>圖片去背</h1>
+  狀態:
+  <label id="status"></label><br>
+  <input id="upload" type="file" accept="image/*" />
+  <img id="img_show"></img>
+  <button id="downloadBtn" style="display: none;">下載圖片</button>
+  <div id="description" style="margin-top: 20px; font-size: 16px; line-height: 0.2;border: 1px solid #ddd; ">
+    <br><br><br><br>
+    <h4>說明:</h4><br>
+    <p>&emsp;- 用於對圖片進行去背</p>
+    <p>&emsp;- 完全本地運行，不會對你的資料進行保存</p>
+    <p>&emsp;- 由於完全本地運行，處理速度取決於你設備性能</p>
+    <p>&emsp;- 模型使用 <a href="https://huggingface.co/Xenova" target="_blank">Xenova</a> 的 remove-background-webgpu</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <!-- <script src="script.js"></script> -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <main>
+      <h1>文字轉語音_測試用</h1>
+      
+      <label for="voiceSelect">選擇語音：</label>
+      <select id="voiceSelect"></select>
+      <br><br>
+
+      <label for="textInput">輸入文字：</label><br>
+      <textarea id="textInput" rows="4" cols="50" placeholder="請輸入要朗讀的文字"></textarea>
+      <br><br>
+
+      <label for="rateInput">速度：</label>
+      <input id="rateInput" type="range" min="0.1" max="2" value="1.25" step="0.05" />
+      <span id="rateValue">1.25</span>
+      <br><br>
+
+      <button onclick="speak()">Speak</button>
+    </main>
+  </body>
+</html>
+
+<script>
+    let voices = [];
+    const voiceSelect = document.getElementById('voiceSelect');
+    const rateInput = document.getElementById('rateInput');
+    const rateValue = document.getElementById('rateValue');
+    const textInput = document.getElementById('textInput');
+
+    // 更新顯示的速度值
+    rateInput.addEventListener('input', () => {
+      rateValue.textContent = rateInput.value;
+    });
+
+    function populateVoiceList() {
+      voices = speechSynthesis.getVoices();
+
+      // 清空選單
+      voiceSelect.innerHTML = '';
+
+      // 生成選項
+      voices.forEach((voice, index) => {
+        if(voice.lang === 'zh-TW' || voice.lang === 'zh-CN'){
+            const option = document.createElement('option');
+            option.textContent = `${voice.name} (${voice.lang})`;
+            option.value = index;
+            voiceSelect.appendChild(option);
+        }
+      });
+      
+        // 預設選擇第7個語音（索引為6）
+          if (voiceSelect.options.length >= 7) {
+            voiceSelect.selectedIndex = 6;
+          }
+    }
+
+    function speak() {
+      // 確保語音列表已經載入
+      if (voices.length === 0) {
+        console.log('語音列表尚未載入，請稍後重試。');
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(textInput.value);
+      
+      // 設置語音
+      const selectedVoiceIndex = voiceSelect.value;
+      utterance.voice = voices[selectedVoiceIndex];
+
+      // 設置速度
+      utterance.rate = rateInput.value;
+
+      console.log(`使用的語音：${utterance.voice.name}, 速度：${utterance.rate}`);
+      speechSynthesis.speak(utterance);
+    }
+
+    // 等待語音列表載入並生成選單
+    window.speechSynthesis.onvoiceschanged = populateVoiceList;
+</script>
