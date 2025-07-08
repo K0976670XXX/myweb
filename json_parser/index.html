@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON 整理器</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        textarea, #jsonOutput {
+            width: 95%;
+            margin-top: -5px;
+            margin-bottom: 5px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        .button-group {
+            margin-bottom: 10px;
+        }
+        .button-group button {
+            margin-right: 10px;
+        }
+        .button-group button, #copyButton {
+            font-size: 0.8em;
+            padding: 8px 8px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON 整理器</h1>
+    <textarea id="jsonInput" rows="6" placeholder="請貼上 JSON 文字..."></textarea><br>
+    <div class="button-group">
+        <button onclick="formatJson()">格式化</button>
+        <button onclick="minifyJson()">壓縮</button>
+        <button onclick="copyJson()">複製</button>
+    </div>
+    <!-- 輸出框: -->
+    <h4>輸出區</h4>
+    <div id="jsonOutput" style="border: 1px solid #ddd; padding: 10px;"></div>
+
+    <div id="description" style="margin-top: 40px; font-size: 16px; line-height: 0.2;border: 1px solid #ddd; ">
+      <br><br><br><br>
+      <h4>說明:</h4><br>
+      <p>&emsp;- 用於進行 json 格式整理，方便閱讀</p>
+    </div>
+</body>
+<script>
+    function formatJson() {
+        const input = document.getElementById('jsonInput').value;
+        try {
+            const obj = JSON.parse(input);
+            const pretty = JSON.stringify(obj, null, 4);  // 縮排 4 空格
+            document.getElementById('jsonOutput').textContent = pretty;
+        } catch (e) {
+            document.getElementById('jsonOutput').textContent = '格式錯誤：' + e.message;
+        }
+    }
+
+    function minifyJson() {
+        const input = document.getElementById('jsonInput').value;
+        try {
+            const obj = JSON.parse(input);
+            const minified = JSON.stringify(obj);
+            document.getElementById('jsonOutput').textContent = minified;
+        } catch (e) {
+            document.getElementById('jsonOutput').textContent = '格式錯誤：' + e.message;
+        }
+    }
+
+    function copyJson() {
+        const text = document.getElementById('jsonOutput').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('已複製 JSON！');
+        }).catch(err => {
+            alert('複製失敗：' + err);
+        });
+    }
+
+</script>
+</html>
